@@ -9,11 +9,11 @@ import org.openqa.selenium.chrome.ChromeDriver;
 
 import static frontEnd.Constants.*;
 
-public class Header {
+public class HeaderLinks {
     WebDriver driver;
 
     @After
-    public void closeDriver () {
+    public void closeDriver() {
         driver.close();
     }
 
