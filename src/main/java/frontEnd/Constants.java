@@ -14,4 +14,11 @@ public class Constants {
     static final String ABOUT_PAGE_LINKTEXT = "About";
 
     static final String TEAM_NAME = "DevFiksiki";
+
+    static final String INFOBLOCK_HEIGHT = "Рост";
+    static final String INFOBLOCK_WEIGHT = "Вес";
+    static final String INFOBLOCK_AGE = "Возраст";
+    static final String INFOBLOCK_BIRTHDATE = "Дата Рождения";
+    static final String INFOBLOCK_HOBBIES = "Хобби";
+
 }
