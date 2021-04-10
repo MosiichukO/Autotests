@@ -8,7 +8,10 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+
+import java.util.concurrent.TimeUnit;
 
 import static Spirit.TestData.*;
 
@@ -19,7 +22,7 @@ public class Registration {
     public void setup() {
         System.setProperty("webdriver.chrome.driver", "C:\\Users\\User\\Downloads\\chromedriver_win32\\chromedriver.exe");
         driver = new ChromeDriver();
-        driver.get("http://52.15.62.220/registration.html");
+        driver.get("http://18.225.7.107/registration.html");
     }
 
     @After
@@ -33,9 +36,11 @@ public class Registration {
         driver.findElement(By.id("email")).sendKeys(VALID_EMAIL);
         driver.findElement(By.id("phone-number")).sendKeys(VALID_NUMBER);
         driver.findElement(By.id("company")).sendKeys(VALID_COMPANY);
+        driver.findElement(By.id("secret-word")).sendKeys(VALID_SECRET_WORD);
         driver.findElement(By.id("password")).sendKeys(VALID_PASSWORD);
         driver.findElement(By.id("confirmPassword")).sendKeys(VALID_PASSWORD);
         driver.findElement(By.id("inv-btn")).click();
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         String actual = driver.getTitle();
         Assert.assertEquals (actual, EXPECTED_TITLE_REGISTRATION);
     }
@@ -46,9 +51,11 @@ public class Registration {
         driver.findElement(By.id("email")).sendKeys(VALID_EMAIL);
         driver.findElement(By.id("phone-number")).sendKeys(VALID_NUMBER);
         driver.findElement(By.id("company")).sendKeys(VALID_COMPANY);
+        driver.findElement(By.id("secret-word")).sendKeys(VALID_SECRET_WORD);
         driver.findElement(By.id("password")).sendKeys(PASSWORD_ONLY_LETTERS);
         driver.findElement(By.id("confirmPassword")).sendKeys(PASSWORD_ONLY_LETTERS);
         driver.findElement(By.id("inv-btn")).click();
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         String actual = driver.getTitle();
         Assert.assertEquals(actual, EXPECTED_TITLE_REGISTRATION);
     }
@@ -59,9 +66,11 @@ public class Registration {
         driver.findElement(By.id("email")).sendKeys(VALID_EMAIL);
         driver.findElement(By.id("phone-number")).sendKeys(VALID_NUMBER);
         driver.findElement(By.id("company")).sendKeys(VALID_COMPANY);
+        driver.findElement(By.id("secret-word")).sendKeys(VALID_SECRET_WORD);
         driver.findElement(By.id("password")).sendKeys(VALID_PASSWORD);
         driver.findElement(By.id("confirmPassword")).sendKeys(VALID_PASSWORD);
         driver.findElement(By.id("inv-btn")).click();
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         String actual = driver.getTitle();
         Assert.assertEquals(actual, EXPECTED_TITLE_REGISTRATION);
     }
@@ -104,9 +113,11 @@ public class Registration {
         driver.findElement(By.id("email")).sendKeys(VALID_EMAIL);
         driver.findElement(By.id("phone-number")).sendKeys(VALID_NUMBER);
         driver.findElement(By.id("company")).sendKeys(VALID_COMPANY);
+        driver.findElement(By.id("secret-word")).sendKeys(VALID_SECRET_WORD);
         driver.findElement(By.id("password")).sendKeys(VALID_PASSWORD);
         driver.findElement(By.id("confirmPassword")).sendKeys("PasswordTest1");
         driver.findElement(By.id("inv-btn")).click();
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         String actual = driver.getTitle();
         Assert.assertEquals(actual, EXPECTED_TITLE_REGISTRATION);
     }
@@ -125,9 +136,11 @@ public class Registration {
         driver.findElement(By.id("email")).sendKeys(VALID_EMAIL);
         driver.findElement(By.id("phone-number")).sendKeys(VALID_NUMBER);
         driver.findElement(By.id("company")).sendKeys(VALID_COMPANY);
+        driver.findElement(By.id("secret-word")).sendKeys(VALID_SECRET_WORD);
         driver.findElement(By.id("password")).sendKeys(VALID_PASSWORD);
         driver.findElement(By.id("confirmPassword")).sendKeys("");
         driver.findElement(By.id("inv-btn")).click();
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         String actual = driver.getTitle();
         Assert.assertEquals(actual, EXPECTED_TITLE_REGISTRATION);
     }
@@ -138,9 +151,11 @@ public class Registration {
         driver.findElement(By.id("email")).sendKeys(VALID_EMAIL);
         driver.findElement(By.id("phone-number")).sendKeys(VALID_NUMBER);
         driver.findElement(By.id("company")).sendKeys(VALID_COMPANY);
+        driver.findElement(By.id("secret-word")).sendKeys(VALID_SECRET_WORD);
         driver.findElement(By.id("password")).sendKeys(VALID_PASSWORD);
         driver.findElement(By.id("confirmPassword")).sendKeys(VALID_PASSWORD);
         driver.findElement(By.id("inv-btn")).click();
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         String actual = driver.getTitle();
         Assert.assertEquals(actual, EXPECTED_TITLE_REGISTRATION);
     }
@@ -151,9 +166,11 @@ public class Registration {
         driver.findElement(By.id("email")).sendKeys(VALID_EMAIL);
         driver.findElement(By.id("phone-number")).sendKeys(VALID_NUMBER);
         driver.findElement(By.id("company")).sendKeys(VALID_COMPANY);
+        driver.findElement(By.id("secret-word")).sendKeys(VALID_SECRET_WORD);
         driver.findElement(By.id("password")).sendKeys(PASSWORD_TEST_7SYMBOLS);
         driver.findElement(By.id("confirmPassword")).sendKeys(PASSWORD_TEST_7SYMBOLS);
         driver.findElement(By.id("inv-btn")).click();
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         String actual = driver.getTitle();
         Assert.assertEquals(actual, EXPECTED_TITLE_REGISTRATION);
     }
@@ -164,9 +181,11 @@ public class Registration {
         driver.findElement(By.id("email")).sendKeys(VALID_EMAIL);
         driver.findElement(By.id("phone-number")).sendKeys(VALID_NUMBER);
         driver.findElement(By.id("company")).sendKeys(VALID_COMPANY);
+        driver.findElement(By.id("secret-word")).sendKeys(VALID_SECRET_WORD);
         driver.findElement(By.id("password")).sendKeys(VALID_PASSWORD);
         driver.findElement(By.id("confirmPassword")).sendKeys(VALID_PASSWORD);
         driver.findElement(By.id("inv-btn")).click();
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         String actual = driver.getTitle();
         Assert.assertEquals(actual, EXPECTED_TITLE_REGISTRATION);
     }
@@ -177,9 +196,11 @@ public class Registration {
         driver.findElement(By.id("email")).sendKeys(VALID_EMAIL);
         driver.findElement(By.id("phone-number")).sendKeys(VALID_NUMBER);
         driver.findElement(By.id("company")).sendKeys(VALID_COMPANY);
+        driver.findElement(By.id("secret-word")).sendKeys(VALID_SECRET_WORD);
         driver.findElement(By.id("password")).sendKeys("");
         driver.findElement(By.id("confirmPassword")).sendKeys(VALID_PASSWORD);
         driver.findElement(By.id("inv-btn")).click();
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         String actual = driver.getTitle();
         Assert.assertEquals(actual, EXPECTED_TITLE_REGISTRATION);
     }
@@ -190,13 +211,52 @@ public class Registration {
         driver.findElement(By.id("email")).sendKeys(VALID_EMAIL);
         driver.findElement(By.id("phone-number")).sendKeys(VALID_NUMBER);
         driver.findElement(By.id("company")).sendKeys(VALID_COMPANY);
+        driver.findElement(By.id("secret-word")).sendKeys(VALID_SECRET_WORD);
         driver.findElement(By.id("password")).sendKeys(PASSWORD_TEST_LOWERCASE);
         driver.findElement(By.id("confirmPassword")).sendKeys(PASSWORD_TEST_LOWERCASE);
         driver.findElement(By.id("inv-btn")).click();
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         String actual = driver.getTitle();
         Assert.assertEquals(actual, EXPECTED_TITLE_REGISTRATION);
     }
 
+    @Test
+    public void test16_emptySecretWord_Registration_MSD158() {
+        driver.findElement(By.id("login-registration")).sendKeys(VALID_LOGIN);
+        driver.findElement(By.id("email")).sendKeys(VALID_EMAIL);
+        driver.findElement(By.id("phone-number")).sendKeys(VALID_NUMBER);
+        driver.findElement(By.id("company")).sendKeys(VALID_COMPANY);
+        driver.findElement(By.id("secret-word")).sendKeys(SECRET_WORD_EMPTY);
+        driver.findElement(By.id("password")).sendKeys(VALID_PASSWORD);
+        driver.findElement(By.id("confirmPassword")).sendKeys(VALID_PASSWORD);
+        driver.findElement(By.id("inv-btn")).click();
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        String actual = driver.getTitle();
+        Assert.assertEquals(actual, EXPECTED_TITLE_REGISTRATION);
+    }
+
+    @Test
+    public void test17_notValidLengthSecretWord_Registration_MSD158() {
+        driver.findElement(By.id("login-registration")).sendKeys(VALID_LOGIN);
+        driver.findElement(By.id("email")).sendKeys(VALID_EMAIL);
+        driver.findElement(By.id("phone-number")).sendKeys(VALID_NUMBER);
+        driver.findElement(By.id("company")).sendKeys(VALID_COMPANY);
+        driver.findElement(By.id("secret-word")).sendKeys(SECRET_WORD_2SYMBOLS);
+        driver.findElement(By.id("password")).sendKeys(VALID_PASSWORD);
+        driver.findElement(By.id("confirmPassword")).sendKeys(VALID_PASSWORD);
+        driver.findElement(By.id("inv-btn")).click();
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        String actual = driver.getTitle();
+        Assert.assertEquals(actual, EXPECTED_TITLE_REGISTRATION);
+    }
+
+    @Test
+    public void test18_link_AlreadyHaveAnAccount_Registration_MSD97 ()  {
+        driver.findElement(By.xpath("//*[@id=\"container\"]/div/div[2]/a")).click();
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        String actual = driver.getTitle();
+        Assert.assertEquals(actual, EXPECTED_TITLE_AUTHORIZATION);
+    }
 }
 
 
