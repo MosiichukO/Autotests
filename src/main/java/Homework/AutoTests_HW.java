@@ -4,11 +4,11 @@ import org.junit.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import static Homework.Attributes.*;
+import static Homework.PageObject.*;
 
 
 public class AutoTests_HW {
@@ -22,21 +22,16 @@ public class AutoTests_HW {
     @Test
     public void test_checkFunctional() {
 
-        WebElement randomName = Singleton.driver.findElement(By.id(ID_RANDOM_NAME));      // 3.2
-        randomName.click();
+        PageObject po = new PageObject(Singleton.driver);
 
-        Singleton.driver.findElement(By.id(ID_DOMAIN)).click();           // 3.3
-        WebDriverWait wait = new WebDriverWait(Singleton.driver, 10);
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.
-                xpath(XPATH_DOMAIN_ROVERINFO)))
-                .click();
+        po.clickButton(randomNameButton);                                                                       // 3.2
 
-        String nameOfEmail = Singleton.driver.findElement(By.id(ID_EMAIL_NAME))  // 3.4
-                .getAttribute("value") + EMAIL_DOMAIN;
+        po.clickButton(dropDownButton);                                                                         // 3.3
+        po.clickButtonWithWaitIt(domainRoverInfo);
 
-        WebElement settings = Singleton.driver.findElement(By.id(ID_SETTINGS)); // 3.5
-        settings.click();
+        String textOfEmail = po.rememberEmail();                                                                // 3.4
 
+        po.clickButton(settingsButton);                                                                         // 3.5
 
 //        wait.until(ExpectedConditions.elementToBeClickable(By.
 //                xpath(XPATH_TEN_MINUTES_BUTTON))).click();
@@ -48,90 +43,47 @@ public class AutoTests_HW {
 //                xpath(XPATH_TEN_MINUTES_BUTTON))).getAttribute("class");
 //       Assert.assertTrue(checkActive.contains("active"));
 
+        String secretAddress = po.rememberSecretAddress();                                                      // 3.6
+        po.clickButtonWithWaitIt(closeSettingsButton);
 
-        String secretAddress = wait.until(ExpectedConditions                                               // 3.6
-                .visibilityOfElementLocated(By.id(ID_SECRET_ADDRESS))).getAttribute("textContent");
-        wait.until(ExpectedConditions
-                .elementToBeClickable(By.xpath(XPATH_CLOSE_SETTINGS_BUTTON))).click();
+        po.waitForVisibility(randomNameButton);                                                                 // 3.7
+        Assert.assertTrue(po.isVisibleOrNo(randomNameButton));
 
-        wait.until(ExpectedConditions.visibilityOf(randomName));  // 3.7
-        Assert.assertTrue(randomName.isDisplayed());
+        String waitingForLetters = po.isWaitingStringIsVisible();                                               // 3.8
+        Assert.assertEquals("В ожидании новых писем...", waitingForLetters);
 
+        po.clickButton(writeButton);                                                                            // 3.9
 
-        WebElement waitingLetters = Singleton.driver.findElement(By.xpath(XPATH_WAITING_LETTERS_TEXT));     // 3.8
-        String waitingLettersString = Singleton.driver.findElement(By.xpath(XPATH_WAITING_LETTERS_TEXT)).getAttribute("textContent");
-        Assert.assertEquals("В ожидании новых писем...", waitingLettersString);
-        Assert.assertTrue(waitingLetters.isDisplayed());
+        po.waitForVisibility(sendButton);                                                                       // 3.10
+        Assert.assertTrue(po.isVisibleOrNo(sendButton));
+        po.sendKeysEmail(textOfEmail, "Test", secretAddress);
 
+        po.clickButton(sendButton);                                                                             // 3.11
 
-        Singleton.driver.findElement(By.xpath(XPATH_WRITE_BUTTON)).click(); // 3.9
+        po.clickButtonWithWaitIt(newLetterIncome);                                                              // 3.12
 
-        WebElement sendButton = Singleton.driver.findElement(By.xpath(XPATH_SEND_BUTTON)); // 3.10
-        wait.until(ExpectedConditions.visibilityOf(sendButton));
-        Assert.assertTrue(sendButton.isDisplayed());
-        Singleton.driver.findElement(By.xpath(XPATH_LETTER_TO))
-                .sendKeys(nameOfEmail);
-        Singleton.driver.findElement(By.xpath(XPATH_LETTER_THEME))
-                .sendKeys("Test");
-        Singleton.driver.findElement(By.xpath(XPATH_LETTER_BODY))
-                .sendKeys(secretAddress);
+        po.waitForVisibility(replyButton);                                                                      // 3.13
+        po.checkSenderEmailComponents(senderEmail, textOfEmail);
+        po.checkSenderEmailComponents(incomeLetterTheme, "Test");
+        po.checkSenderEmailComponents(incomeLetterBody, secretAddress);
 
+        po.clickButton(replyButton);                                                                            // 3.14
+        po.waitForVisibility(sendButton);
+        po.sendKeyBodyReplyEmail("Test2");
+        po.clickButton(sendButton);
 
-        sendButton.click();      // 3.11
-
-
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath(XPATH_NEW_LETTER_INCOME))).click(); // 3.12
-
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath(XPATH_REPLY_BUTTON))); // 3.13
-        WebElement replyButton = Singleton.driver.findElement(By.xpath(XPATH_REPLY_BUTTON));
-
-        String senderName = Singleton.driver.findElement(By.xpath(XPATH_SENDER_EMAIL))
-                .getAttribute("textContent");
-        Assert.assertEquals(nameOfEmail, senderName);
-
-        String themeOfEmail = Singleton.driver.findElement(By.xpath(XPATH_THEME_INCOME_LETTER))
-                .getAttribute("textContent");
-        Assert.assertEquals("Test", themeOfEmail);
-
-        String textOfEmail = Singleton.driver.findElement(By.xpath(XPATH_BODY_INCOME_LETTER))
-                .getAttribute("textContent");
-        Assert.assertEquals(secretAddress, textOfEmail);
+        po.clickButtonWithWaitIt(backButton);                                                                   // 3.15
 
 
-        replyButton.click();                                                    // 3.14
-        wait.until(ExpectedConditions.visibilityOf(sendButton));
-        Singleton.driver.findElement(By.xpath(XPATH_LETTER_BODY)).sendKeys("Test2");
-        sendButton.click();
+        po.checkLetterWithRe("Test");                                                                     // 3.16
+        po.clickButtonWithWaitIt(openIncomeLetterMainPage);
 
+        po.waitForVisibility(incomeLetterBody);                                                                 // 3.17
+        po.checkSenderEmailComponents(incomeLetterBody, "Test2");
 
-        wait.until(ExpectedConditions.                                          // 3.15
-                elementToBeClickable(By.xpath(XPATH_BACK_BUTTON))).click();
+        po.deleteLetter();                                                                                      // 3.18
 
-
-        String resendEmail = "Re: " + themeOfEmail;  // 3.16
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(XPATH_DELETE_ALL)));
-
-        String toCheckRe = Singleton.driver.findElement(By.xpath(XPATH_THEME_INCOME_LETTER_MAINPAGE))
-                .getAttribute("textContent");
-        Assert.assertEquals(resendEmail, toCheckRe);
-
-        Singleton.driver.findElement(By.xpath(XPATH_INCOME_LETTER_MAINPAGE)).click();
-
-
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(XPATH_BODY_INCOME_LETTER)));  // 3.17
-
-        String textOfEmailRe = Singleton.driver.findElement(By.xpath(XPATH_BODY_INCOME_LETTER)).getAttribute("textContent");
-        Assert.assertEquals("Test2", textOfEmailRe);
-
-
-        Singleton.driver.findElement(By.xpath(XPATH_DELETE_LETTER_BUTTON)).click(); // 3.18
-        wait.until(ExpectedConditions
-                .elementToBeClickable(By.xpath(XPATH_CONFIRM_DELETE_LETTER_BUTTON))).click();
-
-
-        wait.until(ExpectedConditions                                      // 3.19
-                .visibilityOfElementLocated(By.xpath(XPATH_DELETE_ALL)));
-        Assert.assertFalse(Singleton.driver.getPageSource().contains("Re: Test"));
+        po.checkLetterNotExist("Re: Test");                                                                 // 3.19
     }
 
     @After

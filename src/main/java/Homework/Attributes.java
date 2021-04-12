@@ -24,7 +24,7 @@ public class Attributes {
     static final String XPATH_LETTER_THEME = "/html/body/div[3]/div/form[1]/div[2]/div[4]/input";
     static final String XPATH_LETTER_BODY = "/html/body/div[3]/div/form[1]/div[3]/div[1]";
     static final String XPATH_NEW_LETTER_INCOME = "//*[@id=\"container-body\"]/div/div[1]/div[2]/div";
-    static final String XPATH_REPLY_BUTTON = "/html/body/div[8]/div[2]/div/div[2]/button";
+    static final String XPATH_REPLY_BUTTON = "//*[@id=\"reply\"]";
     static final String XPATH_SENDER_EMAIL = "/html/body/div[8]/div[2]/div/div[1]/div[2]/div[1]/div[1]/span";
     static final String XPATH_THEME_INCOME_LETTER = "/html/body/div[8]/div[2]/div/div[1]/div[2]/div[2]";
     static final String XPATH_BODY_INCOME_LETTER = "/html/body/div[8]/div[2]/div/div[1]/div[2]/div[3]";
