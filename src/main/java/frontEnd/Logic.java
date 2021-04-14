@@ -1,15 +1,14 @@
-package Homework;
+package frontEnd;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.concurrent.TimeUnit;
 
-import static Homework.Attributes.URL_SITE;
+import static frontEnd.Constants.*;
 
-public class Singleton {
-
+public class Logic {
     public static WebDriver driver = null;
 
     public static void initialize () {
@@ -22,7 +21,7 @@ public class Singleton {
         driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
         driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
         driver.manage().window().maximize();
-        driver.get(URL_SITE);
+        driver.get(BASE_URL);
     }
 
     public static void quit () {
@@ -30,4 +29,7 @@ public class Singleton {
         driver = null;
     }
 
+    public static void LinkFindClick (String link) {
+        driver.findElement(By.linkText(link)).click();
+    }
 }

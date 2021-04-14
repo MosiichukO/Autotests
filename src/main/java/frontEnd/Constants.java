@@ -1,6 +1,7 @@
 package frontEnd;
 
 public class Constants {
+    static final String BASE_URL = "http://localhost:4200";
     static final String HOME_PAGE_URL = "http://localhost:4200/index.html";
     static final String QUESTION_PAGE_URL = "http://localhost:4200/questions.html";
     static final String ABOUT_PAGE_URL = "http://localhost:4200/about.html";
