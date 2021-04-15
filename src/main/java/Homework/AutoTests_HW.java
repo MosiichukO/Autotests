@@ -1,7 +1,7 @@
 package Homework;
 
 import org.junit.*;
-import static Homework.PageObject.*;
+import org.openqa.selenium.WebElement;
 
 
 public class AutoTests_HW {
@@ -13,70 +13,75 @@ public class AutoTests_HW {
 
 
     @Test
-    public void test_checkFunctional() {
+    public void test_checkFunctional() throws InterruptedException {
 
-        PageObject po = new PageObject(Singleton.driver);
+        PageObject po = new PageObject();
 
-        po.clickButton(randomNameButton);                                                                       // 3.2
+        po.getRandomNameButton().click();                                                                       // 3.2
 
-        po.clickButton(dropDownButton);                                                                         // 3.3
-        po.clickButtonWithWaitIt(domainRoverInfo);
+        po.getDropDownButton().click();                                                                         // 3.3
+        po.clickButtonWithWaitIt(po.getDomainRoverInfo());
 
-        String textOfEmail = po.rememberEmail();                                                                // 3.4
+        String textOfEmail = po.rememberEmail(po.getEmailName());                                               // 3.4
 
-        po.clickButton(settingsButton);                                                                         // 3.5
+        po.getSettingsButton().click();                                                                         // 3.5
 
-//        wait.until(ExpectedConditions.elementToBeClickable(By.
-//                xpath(XPATH_TEN_MINUTES_BUTTON))).click();
-//        Singleton.driver.findElement(By.xpath(SAVE_BUTTON)).click();
-//
-//        settings.click();
-//
-//        String checkActive = Singleton.driver.findElement((By.
-//                xpath(XPATH_TEN_MINUTES_BUTTON))).getAttribute("class");
-//       Assert.assertTrue(checkActive.contains("active"));
+        Thread.sleep(500);                                                                                // 3.6
+        String secretAddress = po.rememberSecretAddress(po.getSecretAddress());
+        po.clickButtonWithWaitIt(po.getCloseSettingsButton());
 
-        String secretAddress = po.rememberSecretAddress();                                                      // 3.6
-        po.clickButtonWithWaitIt(closeSettingsButton);
+        WebElement element = po.waitForVisibility(po.getDropDownButton(), 10);                         // 3.7
+        Assert.assertTrue(
+                "Incorrect element displaying",
+                element.isDisplayed()
+        );
 
-        po.waitForVisibility(randomNameButton);                                                                 // 3.7
-        Assert.assertTrue(po.isVisibleOrNo(randomNameButton));
+        po.waitForVisibility(po.getStringWaitingLetters(), 10);         // 3.8
+        Assert.assertEquals("Waiting letters text is incorrect",
+                "В ожидании новых писем...", po.getStringWaitingLetters().getAttribute("textContent"));
 
-        String waitingForLetters = po.isWaitingStringIsVisible();                                               // 3.8
-        Assert.assertEquals("В ожидании новых писем...", waitingForLetters);
+        po.getWriteButton().click();                                                                             // 3.9
 
-        po.clickButton(writeButton);                                                                            // 3.9
+        po.waitForVisibility(po.getSendButton(), 10);                                                                       // 3.10
+        Assert.assertTrue(po.getSendButton().isDisplayed());
+        po.sendKeysEmail(
+                po.getInputEmailTo(), textOfEmail,
+                po.getInputEmailTheme(), "Test",
+                po.getInputEmailBody(), secretAddress);
 
-        po.waitForVisibility(sendButton);                                                                       // 3.10
-        Assert.assertTrue(po.isVisibleOrNo(sendButton));
-        po.sendKeysEmail(textOfEmail, "Test", secretAddress);
+        po.getSendButton().click();                                                                             // 3.11
 
-        po.clickButton(sendButton);                                                                             // 3.11
+        po.clickButtonWithWaitIt(po.getNewLetterIncome());                                                      // 3.12
 
-        po.clickButtonWithWaitIt(newLetterIncome);                                                              // 3.12
+        po.waitForVisibility(po.getReplyButton(), 10);                                                // 3.13
+        po.checkSenderEmailComponents(
+                po.getSenderEmail(), textOfEmail,
+                po.getIncomeLetterTheme(), "Test",
+                po.getIncomeLetterBody(), secretAddress);
 
-        po.waitForVisibility(replyButton);                                                                      // 3.13
-        po.checkSenderEmailComponents(senderEmail, textOfEmail);
-        po.checkSenderEmailComponents(incomeLetterTheme, "Test");
-        po.checkSenderEmailComponents(incomeLetterBody, secretAddress);
+        po.getReplyButton().click();                                                                            // 3.14
+        po.waitForVisibility(po.getSendButton(), 10);
+        po.sendKeyBodyReplyEmail(po.getInputEmailBody(), "Test2");
+        Thread.sleep(500);
+        po.getSendButton().click();
 
-        po.clickButton(replyButton);                                                                            // 3.14
-        po.waitForVisibility(sendButton);
-        po.sendKeyBodyReplyEmail("Test2");
-        po.clickButton(sendButton);
+        Thread.sleep(500);                                                                               // 3.15
+        po.getBackButton().click();
 
-        po.clickButtonWithWaitIt(backButton);                                                                   // 3.15
+        Thread.sleep(500);                                                                               // 3.16
+        po.checkLetterWithRe(po.getThemeOfIncomeLetterMainPage(), "Test");
+        po.clickButtonWithWaitIt(po.getOpenLastIncomeLetterMainPage());
 
+        po.waitForVisibility(po.getIncomeLetterBody(), 10);                                          // 3.17
+        po.checkSenderEmailComponents(
+                po.getSenderEmail(), textOfEmail,
+                po.getIncomeLetterTheme(), "Re: Test",
+                po.getIncomeLetterBody(), "Test2");
 
-        po.checkLetterWithRe("Test");                                                                     // 3.16
-        po.clickButtonWithWaitIt(openIncomeLetterMainPage);
+        po.deleteLetter(po.getDeleteLetter(), po.getConfirmDeleteLetter());                                    // 3.18
 
-        po.waitForVisibility(incomeLetterBody);                                                                 // 3.17
-        po.checkSenderEmailComponents(incomeLetterBody, "Test2");
-
-        po.deleteLetter();                                                                                      // 3.18
-
-        po.checkLetterNotExist("Re: Test");                                                                 // 3.19
+        Thread.sleep(500);                                                                                // 3.19
+        Assert.assertFalse(Singleton.getDriver().getPageSource().contains("Re: Test"));
     }
 
     @After

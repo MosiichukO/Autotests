@@ -1,111 +1,159 @@
 package Homework;
 
+import lombok.Getter;
 import org.junit.Assert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import static Homework.Attributes.*;
+
+@Getter
 
 public class PageObject {
 
-    WebDriver driver;
+    public PageObject() {
+        PageFactory.initElements(Singleton.getDriver(), this);
+    }
+
     WebDriverWait wait;
 
-    public static By randomNameButton = By.id(ID_RANDOM_NAME);
-    public static By dropDownButton = By.id(ID_DOMAIN);
-    public static By domainRoverInfo = By.xpath(XPATH_DOMAIN_ROVERINFO);
-    public static By emailName = By.id(ID_EMAIL_NAME);
-    public static By settingsButton = By.id(ID_SETTINGS);
-    public static By secretAddress = By.id(ID_SECRET_ADDRESS);
-    public static By closeSettingsButton = By.xpath(XPATH_CLOSE_SETTINGS_BUTTON);
-    public static By stringWaitingLetters = By.xpath(XPATH_WAITING_LETTERS_TEXT);
-    public static By writeButton = By.xpath(XPATH_WRITE_BUTTON);
-    public static By sendButton = By.xpath(XPATH_SEND_BUTTON);
-    public static By inputEmailTo = By.xpath(XPATH_LETTER_TO);
-    public static By inputEmailTheme = By.xpath(XPATH_LETTER_THEME);
-    public static By inputEmailBody = By.xpath(XPATH_LETTER_BODY);
-    public static By newLetterIncome = By.xpath(XPATH_NEW_LETTER_INCOME);
-    public static By replyButton = By.xpath(XPATH_REPLY_BUTTON);
-    public static By senderEmail = By.xpath(XPATH_SENDER_EMAIL);
-    public static By incomeLetterTheme = By.xpath(XPATH_THEME_INCOME_LETTER);
-    public static By incomeLetterBody = By.xpath(XPATH_BODY_INCOME_LETTER);
-    public static By backButton = By.xpath(XPATH_BACK_BUTTON);
-    public static By deleteAllButton = By.xpath(XPATH_DELETE_ALL);
-    public static By themeOfIncomeLetterMainPage = By.xpath(XPATH_THEME_INCOME_LETTER_MAINPAGE);
-    public static By openIncomeLetterMainPage = By.xpath(XPATH_INCOME_LETTER_MAINPAGE);
-    public static By deleteLetter = By.xpath(XPATH_DELETE_LETTER_BUTTON);
-    public static By confirmDeleteLetter = By.xpath(XPATH_CONFIRM_DELETE_LETTER_BUTTON);
+    @FindBy(css = "#pre_rand")
+    private WebElement randomNameButton;
+
+    @FindBy(css = "#domain")
+    private WebElement dropDownButton;
+
+    @FindBy(css = "#pre_form > div > div.dropdown.mb-30.mb-md-0.show > div > button:nth-child(6)")
+    private WebElement domainRoverInfo;
+
+    @FindBy(css = "#pre_settings")
+    private WebElement settingsButton;
+
+    @FindBy(css = "#pre_button")
+    private WebElement emailName;
+
+    @FindBy(css = "#secret-address")
+    private WebElement secretAddress;
+
+    @FindBy(css = "#modal-settings > div > form > div.modal-header > div > button")
+    private WebElement closeSettingsButton;
+
+    @FindBy(css = "#container-body > div > div.inbox > div > span")
+    private WebElement stringWaitingLetters;
+
+    @FindBy(css = "#compose")
+    private WebElement writeButton;
+
+    @FindBy(css = "#submit")
+    private WebElement sendButton;
+
+    @FindBy(css = "#to")
+    private WebElement inputEmailTo;
+
+    @FindBy(css = "#subject")
+    private WebElement inputEmailTheme;
+
+    @FindBy(css = "#text")
+    private WebElement inputEmailBody;
+
+    @FindBy(css = "#container-body > div > div.inbox > div.mail > div")
+    private WebElement newLetterIncome;
+
+    @FindBy(css = "#reply")
+    private WebElement replyButton;
+
+    @FindBy(css = "#info > div.row.row-info.no-gutters > div.col.d-flex.mb-10 > span")
+    private WebElement senderEmail;
+
+    @FindBy(css = "#info > div.subject.mb-20")
+    private WebElement incomeLetterTheme;
+
+    @FindBy(css = "#info > div.overflow-auto.mb-20")
+    private WebElement incomeLetterBody;
+
+    @FindBy(css = "#back")
+    private WebElement backButton;
+
+    @FindBy(css = "#container-body > div > div.inbox > div:nth-child(2) > div > div.subj.col-12.col-md-7.px-md-3 > span")
+    private WebElement themeOfIncomeLetterMainPage;
+
+    @FindBy(css = "#container-body > div > div.inbox > div:nth-child(2) > div > div.subj.col-12.col-md-7.px-md-3")
+    private WebElement openLastIncomeLetterMainPage;
+
+    @FindBy(css = "#delete_mail")
+    private WebElement deleteLetter;
+
+    @FindBy(css = "#confirm_mail")
+    private WebElement confirmDeleteLetter;
 
 
-    public PageObject(WebDriver driver) {
-        this.driver = driver;
+    public WebElement waitForVisibility(WebElement element, int timeOfWait, int... timeOfTryOut) {
+        WebElement webElement = null;
+        int timeOfRevision = timeOfTryOut.length == 0
+                ? 100
+                : timeOfTryOut[0];
+        try {
+            webElement = new WebDriverWait(Singleton.getDriver(),
+                    timeOfWait,
+                    timeOfRevision
+            ).until(ExpectedConditions.visibilityOf(element));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return webElement;
     }
 
-    public void waitForVisibility(By by) {
-        wait = new WebDriverWait(driver, 30);
-        wait.until(ExpectedConditions.visibilityOf(driver.findElement(by)));
+    public WebElement clickButtonWithWaitIt(WebElement element) {
+        waitForVisibility(element, 20);
+        element.click();
+        return element;
     }
 
-    public void clickButton(By by) {
-        driver.findElement(by).click();
+    public String rememberEmail(WebElement element) {
+        return element
+                .getAttribute("value") + "@rover.info";
     }
 
-    public void clickButtonWithWaitIt (By by) {
-        waitForVisibility(by);
-        driver.findElement(by).click();
+    public String rememberSecretAddress(WebElement element) {
+        waitForVisibility(element, 10);
+        return element.getAttribute("textContent");
     }
 
-    public String rememberEmail () {
-        return driver.findElement(emailName)
-                .getAttribute("value") + EMAIL_DOMAIN;
+
+    public WebElement sendKeysEmail(WebElement writeTo, String to, WebElement writeTheme, String theme, WebElement writeWhat, String body) {
+        writeTo.sendKeys(to);
+        writeTheme.sendKeys(theme);
+        writeWhat.sendKeys(body);
+        return writeTo;
     }
 
-    public String rememberSecretAddress () {
-        waitForVisibility(secretAddress);
-        return driver.findElement(secretAddress).getAttribute("textContent");
+    public void checkSenderEmailComponents(WebElement email, String exp1, WebElement theme, String exp2,
+                                           WebElement body, String exp3) {
+        String checkEmail = email.getAttribute("textContent");
+        Assert.assertEquals(exp1, checkEmail);
+        String checkTheme = theme.getAttribute("textContent");
+        Assert.assertEquals(exp2, checkTheme);
+        String checkBody = body.getAttribute("textContent");
+        Assert.assertEquals(exp3, checkBody);
     }
 
-    public boolean isVisibleOrNo (By by) {
-        return driver.findElement(by).isDisplayed();
+    public WebElement sendKeyBodyReplyEmail(WebElement element, String str) {
+        element.sendKeys(str);
+        return element;
     }
 
-    public String isWaitingStringIsVisible () {
-        return driver.findElement(stringWaitingLetters).getAttribute("textContent");
-    }
-
-    public void sendKeysEmail (String to, String theme, String body) {
-        driver.findElement(inputEmailTo).sendKeys(to);
-        driver.findElement(inputEmailTheme).sendKeys(theme);
-        driver.findElement(inputEmailBody).sendKeys(body);
-    }
-
-    public void checkSenderEmailComponents (By by, String str) {
-        String forCheck = driver.findElement(by).getAttribute("textContent");
-        Assert.assertEquals(str, forCheck);
-    }
-
-    public void sendKeyBodyReplyEmail (String str) {
-        driver.findElement(inputEmailBody).sendKeys(str);
-    }
-
-    public void checkLetterWithRe (String theme) {
+    public void checkLetterWithRe(WebElement element, String theme) {
         String resendEmail = "Re: " + theme;
-        waitForVisibility(deleteAllButton);
-        String toCheckRe = driver.findElement(themeOfIncomeLetterMainPage).getAttribute("textContent");
+        String toCheckRe = element.getAttribute("textContent");
         Assert.assertEquals(resendEmail, toCheckRe);
     }
 
-    public void deleteLetter () {
-        driver.findElement(deleteLetter).click();
-        waitForVisibility(confirmDeleteLetter);
-        driver.findElement(confirmDeleteLetter).click();
-    }
-
-    public void checkLetterNotExist (String str) {
-        waitForVisibility(deleteAllButton);
-        Assert.assertFalse(driver.getPageSource().contains("Re: Test"));
+    public void deleteLetter(WebElement delete, WebElement confirm) throws InterruptedException {
+        delete.click();
+        Thread.sleep(500);
+        confirm.click();
     }
 
 }
