@@ -1,5 +1,7 @@
-package Homework;
+package Pages;
 
+import Core.DriverFactory;
+import Interface.IMainPage;
 import lombok.Getter;
 import org.junit.Assert;
 import org.openqa.selenium.WebElement;
@@ -11,10 +13,10 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 @Getter
 
-public class PageObject {
+public class MainPage implements IMainPage {
 
-    public PageObject() {
-        PageFactory.initElements(Singleton.getDriver(), this);
+    public MainPage() {
+        PageFactory.initElements(DriverFactory.getDriver(), this);
     }
 
     WebDriverWait wait;
@@ -95,7 +97,7 @@ public class PageObject {
                 ? 100
                 : timeOfTryOut[0];
         try {
-            webElement = new WebDriverWait(Singleton.getDriver(),
+            webElement = new WebDriverWait(DriverFactory.getDriver(),
                     timeOfWait,
                     timeOfRevision
             ).until(ExpectedConditions.visibilityOf(element));
@@ -105,23 +107,6 @@ public class PageObject {
         return webElement;
     }
 
-    public WebElement clickButtonWithWaitIt(WebElement element) {
-        waitForVisibility(element, 20);
-        element.click();
-        return element;
-    }
-
-    public String rememberEmail(WebElement element) {
-        return element
-                .getAttribute("value") + "@rover.info";
-    }
-
-    public String rememberSecretAddress(WebElement element) {
-        waitForVisibility(element, 10);
-        return element.getAttribute("textContent");
-    }
-
-
     public WebElement sendKeysEmail(WebElement writeTo, String to, WebElement writeTheme, String theme, WebElement writeWhat, String body) {
         writeTo.sendKeys(to);
         writeTheme.sendKeys(theme);
@@ -129,14 +114,15 @@ public class PageObject {
         return writeTo;
     }
 
-    public void checkSenderEmailComponents(WebElement email, String exp1, WebElement theme, String exp2,
-                                           WebElement body, String exp3) {
+    public WebElement checkSenderEmailComponents(WebElement email, String exp1, WebElement theme, String exp2,
+                                                 WebElement body, String exp3) {
         String checkEmail = email.getAttribute("textContent");
         Assert.assertEquals(exp1, checkEmail);
         String checkTheme = theme.getAttribute("textContent");
         Assert.assertEquals(exp2, checkTheme);
         String checkBody = body.getAttribute("textContent");
         Assert.assertEquals(exp3, checkBody);
+        return email;
     }
 
     public WebElement sendKeyBodyReplyEmail(WebElement element, String str) {
@@ -144,16 +130,18 @@ public class PageObject {
         return element;
     }
 
-    public void checkLetterWithRe(WebElement element, String theme) {
+    public WebElement checkLetterWithRe(WebElement element, String theme) {
         String resendEmail = "Re: " + theme;
         String toCheckRe = element.getAttribute("textContent");
         Assert.assertEquals(resendEmail, toCheckRe);
+        return element;
     }
 
-    public void deleteLetter(WebElement delete, WebElement confirm) throws InterruptedException {
+    public WebElement deleteLetter(WebElement delete, WebElement confirm) throws InterruptedException {
         delete.click();
         Thread.sleep(500);
         confirm.click();
+        return delete;
     }
 
 }
